@@ -2,36 +2,20 @@ const express = require('express');
 
 const app = express();
 const PORT = 3001;
+const views = require('./routes/viewRoutes/htmlRoutes');
+const apiRoutes = require('./routes/apiRoutes/noteRotes');
 
-app.use( express.static('public') );
 
-app.get('/notes', (req,res) => {
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(express.static('public') );
 
-    // send the file 'notes.html'
-    res.sendFile( path.join(__dirname, 'public/notes.html' ) );
 
-});
+//Load apiRoutes before views
+app.use('/api', apiRoutes)
+app.use('/', views)
 
-app.get('/api/notes', (req,res) => {
-
-    // send the file 'notes.html'
-    res.json( /* send note data */ );
-
-});
-
-app.post('/api/notes', (req, res) => {
-
-    // Create/persist data
-
-    // Access the new note data from 'req'
-
-    // Push it to my existing list of notes
-
-    // Write my updated notes list to the 'db.json' file
-    res.json( 'message' );
-
-});
 
 app.listen(PORT, () =>
-    console.log('Exapmle app listening at http://localhost:${PORT}')
+    console.log( `Example app listening at http://localhost:${PORT}` )
 );
